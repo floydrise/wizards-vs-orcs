@@ -1,6 +1,7 @@
 import kaplay from "kaplay";
 import {loadAssets} from "./loadAssets";
 import {makeMenu} from "./makeMenu";
+import {makeGame} from "./makeGame";
 
 const k = kaplay({
     letterbox: true,
@@ -15,5 +16,6 @@ k.setBackground(k.Color.fromHex("#071821"))
 
 loadAssets(k);
 makeMenu(k);
+makeGame(k);
 
 k.go("menu");
