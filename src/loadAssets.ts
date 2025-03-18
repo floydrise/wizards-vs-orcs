@@ -1,9 +1,9 @@
-import {KAPLAYCtx} from "kaplay";
+import { KAPLAYCtx } from "kaplay";
 
 export const loadAssets = (k: KAPLAYCtx) => {
   k.loadSprite("wizard", "/sprites/wizzard_m_idle_anim_f0.png");
   k.loadSprite("demon", "/sprites/big_demon_idle_anim_f0.png");
-  k.loadSpriteAtlas("magic", "/sprites/weapon.png");
+  k.loadSprite("magic", "/sprites/weapon.png");
   k.loadSprite("arrow", "/sprites/arrow.png");
   k.loadSprite("background", "/sprites/floor.png");
 
@@ -13,5 +13,5 @@ export const loadAssets = (k: KAPLAYCtx) => {
   k.loadSound("wind", "/sounds/wind.wav");
   k.loadSound("explosion", "/sounds/explosion.wav");
 
-  k.loadSound("bg", "/music/bgMusic.mp3");
-}
+  k.loadMusic("bg", "/music/bgMusic.mp3")
+};
