@@ -1,10 +1,10 @@
-import { KAPLAYCtx } from "kaplay";
+import { GameObj, KAPLAYCtx } from "kaplay";
 
 export const makeGame = (k: KAPLAYCtx) => {
   return k.scene("game", () => {
     const background = k.add([
       k.pos(0, 0),
-      k.sprite("background", { width: 1280, height: 720, tiled: true }),
+      k.sprite("background", { width: 1280, height: 720}),
       k.scale(4),
     ]);
 
@@ -43,20 +43,20 @@ export const makeGame = (k: KAPLAYCtx) => {
     const makeEnemy = () => {
       return k.add([
         k.pos(k.rand(k.vec2(k.width(), 0))),
-        k.sprite("demon"),
+        k.sprite("pumpkinGuy"),
         k.area(),
         k.anchor("center"),
         k.scale(4),
         {
-          speed: 300,
+          speed: 100,
           fireTimer: 0,
-          fireTime: k.rand(10, 100),
+          fireTime: k.rand(100, 200),
         },
         "enemy",
       ]);
     };
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       makeEnemy();
     }
 
@@ -88,5 +88,71 @@ export const makeGame = (k: KAPLAYCtx) => {
       }
     });
 
+    k.onKeyPress("left", () => {
+      k.play("walk", { volume: 0.3 });
+    });
+
+    k.onKeyPress("right", () => {
+      k.play("walk", { volume: 0.3 });
+    });
+
+    k.onKeyPress("up", () => {
+      k.play("walk", { volume: 0.3 });
+    });
+
+    k.onKeyPress("down", () => {
+      k.play("walk", { volume: 0.3 });
+    });
+
+    k.onKeyPress("space", () => {
+      k.play("fire", { volume: 0.3 });
+      k.add([
+        k.pos(player.pos.x, player.pos.y - 64),
+        k.sprite("magic"),
+        k.area(),
+        k.anchor("center"),
+        k.offscreen({ destroy: true }),
+        {
+          speed: 800,
+        },
+        "fire",
+      ]);
+    });
+
+    k.onUpdate("fire", (fire) => {
+      fire.move(0, -fire.speed);
+    });
+
+    k.onUpdate("arrow", (arrow) => {
+      arrow.move(0, arrow.speed);
+    });
+
+    k.onUpdate("enemy", (enemy) => {
+      enemy.move(0, enemy.speed);
+      enemy.fireTimer++;
+
+      if (enemy.pos.y >= 784) {
+        k.destroy(enemy);
+        makeEnemy();
+      }
+      if (enemy.fireTimer >= enemy.fireTime) {
+        k.play("wind", { volume: 0.3 });
+        const arrow = k.add([
+          k.pos(enemy.pos.x, enemy.pos.y + 32),
+          k.sprite("arrow"),
+          k.rotate(),
+          k.area(),
+          k.anchor("center"),
+          k.offscreen({ destroy: true }),
+          k.scale(2),
+          {
+            speed: 500,
+          },
+          "arrow",
+        ]);
+        arrow.angle = 180;
+        enemy.fireTimer = 0;
+      }
+    });
   });
 };
