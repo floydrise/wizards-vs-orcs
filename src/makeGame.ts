@@ -52,15 +52,41 @@ export const makeGame = (k: KAPLAYCtx) => {
           fireTimer: 0,
           fireTime: k.rand(10, 100),
         },
-        "enemy"
+        "enemy",
       ]);
     };
 
     for (let i = 0; i < 5; i++) {
-      makeEnemy()
+      makeEnemy();
     }
 
+    k.onKeyDown("left", () => {
+      player.move(-player.speed, 0);
+      if (player.pos.x <= 32) {
+        player.pos.x = 32;
+      }
+    });
 
+    k.onKeyDown("right", () => {
+      player.move(player.speed, 0);
+      if (player.pos.x >= 1280 - 32) {
+        player.pos.x = 1280 - 32;
+      }
+    });
+
+    k.onKeyDown("up", () => {
+      player.move(0, -player.speed);
+      if (player.pos.y <= 96) {
+        player.pos.y = 96;
+      }
+    });
+
+    k.onKeyDown("down", () => {
+      player.move(0, player.speed);
+      if (player.pos.y >= 720 - 64) {
+        player.pos.y = 720 - 64;
+      }
+    });
 
   });
 };
