@@ -15,5 +15,5 @@ export const loadAssets = (k: KAPLAYCtx) => {
   k.loadSound("explosion", "/sounds/explosion.wav");
   k.loadSound("walk", "/sounds/walk.wav")
 
-  k.loadMusic("bg", "/music/bgMusic.mp3")
+  k.loadMusic("bgMusic", "/music/bgMusic.mp3")
 };

@@ -1,10 +1,12 @@
-import { GameObj, KAPLAYCtx } from "kaplay";
+import { KAPLAYCtx } from "kaplay";
 
 export const makeGame = (k: KAPLAYCtx) => {
   return k.scene("game", () => {
+    const music = k.play("bgMusic", {volume: 0.3, loop: true})
+
     const background = k.add([
       k.pos(0, 0),
-      k.sprite("background", { width: 1280, height: 720}),
+      k.sprite("background", { width: 1280, height: 720 }),
       k.scale(4),
     ]);
 
@@ -89,23 +91,23 @@ export const makeGame = (k: KAPLAYCtx) => {
     });
 
     k.onKeyPress("left", () => {
-      k.play("walk", { volume: 0.3 });
+      k.play("walk", { volume: 0.5 });
     });
 
     k.onKeyPress("right", () => {
-      k.play("walk", { volume: 0.3 });
+      k.play("walk", { volume: 0.5 });
     });
 
     k.onKeyPress("up", () => {
-      k.play("walk", { volume: 0.3 });
+      k.play("walk", { volume: 0.5 });
     });
 
     k.onKeyPress("down", () => {
-      k.play("walk", { volume: 0.3 });
+      k.play("walk", { volume: 0.5 });
     });
 
     k.onKeyPress("space", () => {
-      k.play("fire", { volume: 0.3 });
+      k.play("fire", { volume: 0.6 });
       k.add([
         k.pos(player.pos.x, player.pos.y - 64),
         k.sprite("magic"),
@@ -154,5 +156,31 @@ export const makeGame = (k: KAPLAYCtx) => {
         enemy.fireTimer = 0;
       }
     });
+
+    k.onCollide("fire", "enemy",(fire, enemy) => {
+      k.play("explosion", {volume: 0.6});
+      score.value += 1;
+      score.text = `Score: ${score.value}`;
+      k.destroy(enemy);
+      k.destroy(fire);
+      makeEnemy()
+    })
+
+    k.onCollide("player", "enemy", (player, enemy) => {
+      k.destroy(player);
+      k.destroy(enemy);
+      k.play("explosion");
+      music.stop();
+      k.go("gameOver")
+    })
+
+    k.onCollide("player", "arrow", (player, arrow) => {
+      k.destroy(player);
+      k.destroy(arrow);
+      k.play("explosion");
+      k.go("gameOver");
+      music.stop();
+    })
+
   });
 };
